@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+{{ title }}
+{% endblock pagetitle %}
+
+{% block body %}
+<style>
+    .image-panel img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+    }
+
+    .result-stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+        border-radius: 16px;
+        background: var(--surface-tint);
+        border: 1px solid var(--line);
+    }
+
+    .prediction-item {
+        padding: 1rem 1.1rem;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: var(--surface-tint);
+    }
+
+    .prediction-title {
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+
+    .confidence-badge {
+        min-width: 88px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .text-block {
+        min-height: 100%;
+    }
+
+    .recommendation-copy {
+        color: var(--muted);
+        line-height: 1.8;
+    }
+
+    .recommendation-name {
+        margin-top: 1rem;
+        padding: 1rem 1.1rem;
+        border-radius: 16px;
+        background: var(--warning-soft);
+        border: 1px solid var(--line);
+        color: var(--text);
+        font-weight: 800;
+    }
+</style>
+
+<div class="container">
+    <div class="page-hero">
+        <span class="soft-kicker">Prediction Result</span>
+        <h1 class="page-title"><b>{{ title }}</b></h1>
+        <p class="page-subtitle">The model returned this class as the strongest match for the uploaded image. Review the ranked alternatives and recommended next steps below.</p>
+    </div>
+
+    <div class="row grid-gap mb-4">
+        <div class="col-lg-6">
+            <div class="p-4 bg-white shadow rounded-lg section-card image-panel">
+                <span class="chip mb-3">Uploaded Leaf</span>
+                <img src="{{ url_for('static', filename=uploaded_image) }}" alt="Uploaded leaf image">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="p-4 bg-white shadow rounded-lg section-card image-panel">
+                <span class="chip mb-3">Reference Image</span>
+                <img src="{{ image_url }}" alt="{{ title }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="row grid-gap mb-4">
+        <div class="col-lg-4">
+            <div class="p-4 bg-white shadow rounded-lg section-card">
+                <span class="chip mb-3">Primary Result</span>
+                <h5><b>Main Prediction</b></h5>
+                <div class="result-stat mt-4">
+                    <div>
+                        <div class="prediction-title">{{ title }}</div>
+                        <div class="muted-block">{% if is_healthy %}Healthy{% else %}Diseased{% endif %}</div>
+                    </div>
+                    <div class="chip confidence-badge">{{ confidence }}%</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="p-4 bg-white shadow rounded-lg section-card">
+                <span class="chip mb-3">Ranked Alternatives</span>
+                <h5><b>Top-3 Predictions</b></h5>
+                <div class="mt-4">
+                    {% for prediction in top_predictions %}
+                    <div class="prediction-item {% if not loop.last %}mb-3{% endif %}">
+                        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                            <div>
+                                <div class="prediction-title">#{{ prediction.rank }} {{ prediction.title }}</div>
+                                <div class="muted-block">{% if prediction.is_healthy %}Healthy{% else %}Diseased{% endif %}</div>
+                            </div>
+                            <div class="chip confidence-badge">{{ prediction.confidence }}%</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row grid-gap">
+        <div class="col-lg-4">
+            <div class="p-4 bg-white shadow rounded-lg section-card text-block">
+                <span class="chip mb-3">Explanation</span>
+                <h5><b>{% if is_healthy %}Tips to Grow Healthy Plants{% else %}Brief Description{% endif %}</b></h5>
+                <p class="section-copy mb-0">{{ desc }}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="p-4 bg-white shadow rounded-lg section-card text-block">
+                <span class="chip mb-3">Next Steps</span>
+                <h5><b>{% if is_healthy %}Benefits{% else %}Prevention Guidance{% endif %}</b></h5>
+                <p class="section-copy mb-0">{{ prevent }}</p>
+            </div>
+        </div>
+
+        {% if pred != 4 %}
+        <div class="col-lg-4">
+            <div class="p-4 bg-white shadow rounded-lg section-card text-block">
+                <span class="chip mb-3">{% if is_healthy %}Fertilizer{% else %}Supplement{% endif %}</span>
+                <h5><b>Recommended Product</b></h5>
+                <p class="recommendation-copy mb-0">
+                    {% if is_healthy %}
+                    Recommended fertilizer for plant health support:
+                    {% else %}
+                    Recommended supplement based on the predicted disease:
+                    {% endif %}
+                </p>
+                <div class="recommendation-name">{{ sname }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock body %}

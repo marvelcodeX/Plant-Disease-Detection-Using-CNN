@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+Dashboard
+{% endblock pagetitle %}
+
+{% block body %}
+<style>
+    .stat-card {
+        height: 100%;
+        padding: 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        margin-bottom: 0.4rem;
+    }
+
+    .stat-label,
+    .history-meta,
+    .empty-copy,
+    .breakdown-value {
+        color: var(--muted);
+    }
+
+    .history-entry {
+        padding: 1rem;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: var(--surface-tint);
+    }
+
+    .history-entry img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+    }
+
+    .mini-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0.35rem 0.35rem 0 0;
+        padding: 0.45rem 0.7rem;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+        font-size: 0.84rem;
+        font-weight: 700;
+    }
+
+    .breakdown-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.95rem 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .breakdown-row:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .breakdown-row:first-child {
+        padding-top: 0;
+    }
+</style>
+
+<div class="container">
+    <div class="page-hero">
+        <span class="soft-kicker">Personal History</span>
+        <h1 class="page-title"><b>{{ current_user['username'] }}'s Dashboard</b></h1>
+        <p class="page-subtitle">Review your scan activity, average confidence, and recent prediction history in one place.</p>
+    </div>
+
+    <div class="row grid-gap mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white shadow rounded-lg section-card stat-card">
+                <span class="chip mb-3">Overview</span>
+                <div class="stat-value">{{ total_scans }}</div>
+                <div class="stat-label">Total scans</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white shadow rounded-lg section-card stat-card">
+                <span class="chip mb-3">Healthy</span>
+                <div class="stat-value">{{ healthy_count }}</div>
+                <div class="stat-label">Healthy predictions</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white shadow rounded-lg section-card stat-card">
+                <span class="chip mb-3">Diseased</span>
+                <div class="stat-value">{{ diseased_count }}</div>
+                <div class="stat-label">Diseased predictions</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white shadow rounded-lg section-card stat-card">
+                <span class="chip mb-3">Confidence</span>
+                <div class="stat-value">{{ average_confidence }}%</div>
+                <div class="stat-label">Average confidence</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row grid-gap">
+        <div class="col-lg-4">
+            <div class="p-4 bg-white shadow rounded-lg section-card">
+                <span class="chip mb-3">Patterns</span>
+                <h5><b>Most Common Predictions</b></h5>
+                {% if disease_breakdown %}
+                <div class="mt-3">
+                    {% for item in disease_breakdown %}
+                    <div class="breakdown-row">
+                        <div>{{ item['predicted_title'] }}</div>
+                        <div class="breakdown-value">{{ item['total'] }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="empty-copy mt-3 mb-0">No scans saved yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="p-4 bg-white shadow rounded-lg section-card">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+                    <div>
+                        <span class="chip mb-3">Saved Predictions</span>
+                        <h5 class="mb-0"><b>Recent Scan History</b></h5>
+                    </div>
+                    <a href="/index" class="btn btn-success">New Scan</a>
+                </div>
+
+                {% if recent_history %}
+                {% for entry in recent_history %}
+                <div class="history-entry {% if not loop.last %}mb-3{% endif %}">
+                    <div class="row align-items-center g-3">
+                        <div class="col-md-4 col-lg-3">
+                            <img src="{{ url_for('static', filename=entry['image_path']) }}" alt="{{ entry['predicted_title'] }}">
+                        </div>
+                        <div class="col-md-8 col-lg-9">
+                            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                <div>
+                                    <h6 class="mb-1"><b>{{ entry['predicted_title'] }}</b></h6>
+                                    <div class="history-meta">{{ entry['created_at'] }}</div>
+                                </div>
+                                <div class="mini-chip">{{ entry['predicted_confidence'] }}%</div>
+                            </div>
+                            <div class="mt-3">
+                                {% for prediction in entry['top_predictions'] %}
+                                <span class="mini-chip">#{{ prediction['rank'] }} {{ prediction['title'] }} - {{ prediction['confidence'] }}%</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="empty-copy mt-3 mb-0">You have no saved scans yet. Run your first prediction from the AI Engine.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

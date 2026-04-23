@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+Plant Disease Detection
+{% endblock pagetitle %}
+
+{% block body %}
+<style>
+    .hero-panel {
+        padding: 2.5rem;
+        border-radius: 28px;
+        background:
+            linear-gradient(135deg, rgba(29, 87, 75, 0.08), rgba(255, 255, 255, 0.86)),
+            var(--surface-strong);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .hero-stat {
+        padding: 1.1rem 1.2rem;
+        border-radius: 18px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+    }
+
+    .hero-stat-value {
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+    }
+
+    .hero-stat-label {
+        margin-top: 0.35rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+
+    .feature-card {
+        height: 100%;
+        padding: 1.5rem;
+    }
+
+    .feature-visual {
+        width: 56px;
+        height: 56px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+        font-size: 1.1rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+        margin-bottom: 0;
+        color: var(--muted);
+        line-height: 1.75;
+    }
+
+    .capability-list {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .capability-item {
+        padding: 1rem 1.1rem;
+        border-radius: 18px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+    }
+
+    .capability-item strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: var(--text);
+    }
+</style>
+
+<div class="container">
+    <div class="hero-panel mb-4">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="soft-kicker">Plant Health AI</span>
+                <h1 class="page-title"><b>Plant Disease Detection</b></h1>
+                <p class="page-subtitle text-start mx-0">Upload a leaf image, review the model’s confidence-ranked predictions, and keep a private scan history tied to your local account.</p>
+                <div class="mt-4 d-flex flex-wrap gap-3">
+                    <a href="/index" class="btn btn-success">Open AI Engine</a>
+                    {% if current_user %}
+                    <a href="/dashboard" class="btn btn-outline-success">Open Dashboard</a>
+                    {% else %}
+                    <a href="/signup" class="btn btn-outline-success">Create Account</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">39</div>
+                        <div class="hero-stat-label">classification classes</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">Top-3</div>
+                        <div class="hero-stat-label">ranked predictions returned</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">Local</div>
+                        <div class="hero-stat-label">per-user account storage</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">History</div>
+                        <div class="hero-stat-label">private dashboard tracking</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-hero">
+        <span class="soft-kicker">What This App Does</span>
+    </div>
+
+    <div class="row grid-gap mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white shadow rounded-lg section-card feature-card">
+                <div class="feature-visual">01</div>
+                <h5><b>Leaf Image Input</b></h5>
+                <p>Upload a photo or capture one from the camera directly in the AI Engine with a workflow built around leaf-based prediction.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white shadow rounded-lg section-card feature-card">
+                <div class="feature-visual">02</div>
+                <h5><b>Confidence Scores</b></h5>
+                <p>Each prediction returns a model confidence percentage so the user can judge whether a result looks decisive or uncertain.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white shadow rounded-lg section-card feature-card">
+                <div class="feature-visual">03</div>
+                <h5><b>Top-3 Ranking</b></h5>
+                <p>The result page shows the best three candidate classes rather than forcing a single opaque answer with no alternatives.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white shadow rounded-lg section-card feature-card">
+                <div class="feature-visual">04</div>
+                <h5><b>Private Dashboard</b></h5>
+                <p>Logged-in users get a separate dashboard with their own scan history, prediction trends, and recent activity.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row grid-gap">
+        <div class="col-lg-6">
+            <div class="p-4 bg-white shadow rounded-lg section-card">
+                <span class="chip mb-3">Workflow</span>
+                <h5><b>How It Works</b></h5>
+                <div class="capability-list mt-4">
+                    <div class="capability-item">
+                        <strong>1. Capture a clean leaf image</strong>
+                        Use one visible leaf with clear disease signs and minimal background noise.
+                    </div>
+                    <div class="capability-item">
+                        <strong>2. Run inference through the CNN model</strong>
+                        The model processes the image and scores all supported plant classes.
+                    </div>
+                    <div class="capability-item">
+                        <strong>3. Review ranked outputs and guidance</strong>
+                        The UI shows the main prediction, alternatives, and disease-prevention guidance.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="p-4 bg-white shadow rounded-lg section-card">
+                <span class="chip mb-3">Coverage</span>
+                <h5><b>Supported Crop Groups</b></h5>
+                <div class="capability-list mt-4">
+                    <div class="capability-item">
+                        <strong>Fruit crops</strong>
+                        Apple, blueberry, cherry, grape, orange, peach, raspberry, and strawberry.
+                    </div>
+                    <div class="capability-item">
+                        <strong>Vegetable crops</strong>
+                        Bell pepper, potato, squash, tomato, and corn.
+                    </div>
+                    <div class="capability-item">
+                        <strong>Healthy and diseased classes</strong>
+                        The model distinguishes both healthy plants and multiple disease categories in the trained set.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+Login
+{% endblock pagetitle %}
+
+{% block body %}
+<style>
+    .auth-shell {
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    .auth-card {
+        padding: 2.5rem;
+    }
+
+    .auth-card label {
+        margin-bottom: 0.7rem;
+        padding: 0;
+        background: transparent;
+        color: var(--text);
+        box-shadow: none;
+        font-weight: 700;
+        justify-content: flex-start;
+    }
+
+    .auth-card label:hover {
+        transform: none;
+        background: transparent;
+    }
+</style>
+
+<div class="container">
+    <div class="auth-shell">
+        <div class="page-hero">
+            <span class="soft-kicker">Account Access</span>
+            <h1 class="page-title"><b>Login</b></h1>
+            <p class="page-subtitle">Sign in to run predictions and keep your scan history private to your account.</p>
+        </div>
+
+        <div class="bg-white shadow rounded-lg section-card auth-card">
+            <form method="POST" action="/login">
+                <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
+                <div class="mb-4">
+                    <label for="username">Username</label>
+                    <input class="form-control" id="username" name="username" type="text" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password">Password</label>
+                    <input class="form-control" id="password" name="password" type="password" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Login</button>
+            </form>
+            <p class="muted-block mt-4 mb-0 text-center">Need an account? <a href="/signup">Create one</a></p>
+        </div>
+    </div>
+</div>
+{% endblock body %}

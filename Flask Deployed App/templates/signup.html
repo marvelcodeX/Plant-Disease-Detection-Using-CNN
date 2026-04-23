@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+Sign Up
+{% endblock pagetitle %}
+
+{% block body %}
+<style>
+    .auth-shell {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .auth-card {
+        padding: 2.5rem;
+    }
+
+    .auth-card label {
+        margin-bottom: 0.7rem;
+        padding: 0;
+        background: transparent;
+        color: var(--text);
+        box-shadow: none;
+        font-weight: 700;
+        justify-content: flex-start;
+    }
+
+    .auth-card label:hover {
+        transform: none;
+        background: transparent;
+    }
+</style>
+
+<div class="container">
+    <div class="auth-shell">
+        <div class="page-hero">
+            <span class="soft-kicker">Local Account</span>
+            <h1 class="page-title"><b>Create Account</b></h1>
+            <p class="page-subtitle">Set up a local account to keep predictions, confidence scores, and scan history separated by user.</p>
+        </div>
+
+        <div class="bg-white shadow rounded-lg section-card auth-card">
+            <form method="POST" action="/signup">
+                <div class="mb-4">
+                    <label for="username">Username</label>
+                    <input class="form-control" id="username" name="username" type="text" minlength="3" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password">Password</label>
+                    <input class="form-control" id="password" name="password" type="password" minlength="6" required>
+                </div>
+                <div class="mb-4">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input class="form-control" id="confirm_password" name="confirm_password" type="password" minlength="6" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Create Account</button>
+            </form>
+            <p class="muted-block mt-4 mb-0 text-center">Already have an account? <a href="/login">Login</a></p>
+        </div>
+    </div>
+</div>
+{% endblock body %}

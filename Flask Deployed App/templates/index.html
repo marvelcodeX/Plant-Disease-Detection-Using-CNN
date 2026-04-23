@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+AI Engine
+{% endblock pagetitle %}
+
+{% block body %}
+<style>
+    .engine-grid {
+        align-items: stretch;
+    }
+
+    .engine-card,
+    .upload-card,
+    .tips-card {
+        height: 100%;
+    }
+
+    .engine-illustration {
+        width: 180px;
+        margin: 0 auto 1.5rem;
+        display: block;
+        filter: drop-shadow(0 18px 28px rgba(37, 107, 92, 0.14));
+    }
+
+    .upload-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .upload-actions label {
+        margin: 0;
+    }
+
+    .upload-meta {
+        padding: 0.9rem 1rem;
+        border: 1px dashed rgba(37, 107, 92, 0.24);
+        border-radius: 16px;
+        background: var(--accent-soft-2);
+    }
+
+    #camera-container {
+        margin-top: 1rem;
+    }
+
+    #camera-feed,
+    #preview {
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: #dce4ea;
+    }
+
+    #capture-btn {
+        margin-top: 0.9rem;
+        border: none;
+        border-radius: 999px;
+        padding: 0.76rem 1rem;
+        font-weight: 800;
+        color: #fff;
+        background: var(--accent-strong);
+        box-shadow: 0 14px 24px rgba(29, 87, 75, 0.18);
+    }
+
+    .tips-list {
+        padding-left: 1.2rem;
+        margin-bottom: 0;
+    }
+
+    .tips-list li {
+        margin-bottom: 0.7rem;
+        color: var(--muted);
+        line-height: 1.7;
+    }
+</style>
+
+<div class="container">
+    <div class="page-hero">
+        <span class="soft-kicker">Prediction Workspace</span>
+        <h1 class="page-title"><b>AI Engine</b></h1>
+        <p class="page-subtitle">Upload a clear leaf photo to generate a prediction, confidence score, and ranked alternatives. This screen is tuned for quick scanning and consistent results.</p>
+    </div>
+
+    <div class="row grid-gap engine-grid">
+        <div class="col-lg-5">
+            <div class="p-5 bg-white shadow rounded-lg section-card engine-card">
+                <span class="chip mb-3">Detection Guidance</span>
+                <h5><b>Before You Upload</b></h5>
+                <p class="section-copy">Use a single leaf, keep the frame tight, and avoid motion blur. Cleaner input reduces class confusion and improves confidence quality.</p>
+                <div class="mt-4">
+                    <p class="section-copy mb-2"><b style="color: var(--text);">Best practices</b></p>
+                    <ul class="tips-list">
+                        <li>Capture the leaf against a plain background when possible.</li>
+                        <li>Prefer natural light or bright indoor light.</li>
+                        <li>Avoid including multiple leaves in the same photo.</li>
+                        <li>Make sure the visible disease pattern is in focus.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="p-5 bg-white shadow rounded-lg section-card upload-card">
+                <form action="/submit" method="POST" enctype="multipart/form-data">
+                    <input type="file" id="actual-btn" hidden name="image" accept="image/*">
+
+                    <div class="upload-actions">
+                        <label for="actual-btn">Choose File</label>
+                        <button type="button" id="camera-btn" class="btn btn-outline-success">Use Camera</button>
+                    </div>
+
+                    <div class="upload-meta mb-4">
+                        <div id="file-chosen">No file chosen</div>
+                    </div>
+
+                    <div id="camera-container" style="display: none;">
+                        <video id="camera-feed" autoplay playsinline></video>
+                        <button type="button" id="capture-btn">Capture Photo</button>
+                    </div>
+
+                    <img id="preview" src="#" alt="Camera preview" style="display: none; margin-top: 1rem;">
+
+                    <div class="mt-4">
+                        <p class="section-copy mb-4">Upload a clear image of one leaf. The prediction will be saved to your dashboard automatically.</p>
+                        <button type="submit" class="btn btn-success">Run Prediction</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row grid-gap mt-4">
+        <div class="col-12">
+            <div class="p-5 bg-white shadow rounded-lg section-card tips-card">
+                <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
+                    <div>
+                        <span class="chip mb-3">Prevention Basics</span>
+                        <h5><b>Reduce Plant Disease Risk</b></h5>
+                    </div>
+                    <a target="_blank" href="https://veganic.bio/en-in/plant-disease-control-%E2%86%92-guide/" class="btn btn-outline-success">More Info</a>
+                </div>
+                <div class="row grid-gap">
+                    <div class="col-md-6">
+                        <ul class="tips-list">
+                            <li>Follow good sanitation practices in the garden.</li>
+                            <li>Inspect plants for disease before bringing them home.</li>
+                            <li>Allow the soil to warm before planting.</li>
+                            <li>Provide good airflow between plants.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="tips-list">
+                            <li>Rotate crops to reduce recurring disease pressure.</li>
+                            <li>Remove infected stems and foliage early.</li>
+                            <li>Keep plants healthy with appropriate nutrition.</li>
+                            <li>Review patterns over time in your dashboard.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const actualBtn = document.getElementById('actual-btn');
+    const fileChosen = document.getElementById('file-chosen');
+    const cameraContainer = document.getElementById('camera-container');
+    const cameraFeed = document.getElementById('camera-feed');
+    const preview = document.getElementById('preview');
+    const cameraButton = document.getElementById('camera-btn');
+    const captureButton = document.getElementById('capture-btn');
+
+    let capturedFile = null;
+    let activeStream = null;
+
+    actualBtn.addEventListener('change', function () {
+        if (this.files && this.files[0]) {
+            capturedFile = null;
+            fileChosen.textContent = this.files[0].name;
+            preview.style.display = 'none';
+        }
+    });
+
+    cameraButton.addEventListener('click', async function () {
+        cameraContainer.style.display = 'block';
+
+        if (activeStream) {
+            return;
+        }
+
+        try {
+            activeStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            cameraFeed.srcObject = activeStream;
+        } catch (error) {
+            fileChosen.textContent = 'Unable to access camera.';
+            console.error('Camera error:', error);
+        }
+    });
+
+    captureButton.addEventListener('click', function () {
+        if (!cameraFeed.videoWidth || !cameraFeed.videoHeight) {
+            return;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = cameraFeed.videoWidth;
+        canvas.height = cameraFeed.videoHeight;
+
+        const context = canvas.getContext('2d');
+        context.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg');
+        const imageBlob = dataURItoBlob(dataUrl);
+        capturedFile = new File([imageBlob], 'camera_image.jpg', { type: 'image/jpeg' });
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(capturedFile);
+        actualBtn.files = dataTransfer.files;
+
+        fileChosen.textContent = capturedFile.name;
+        preview.src = dataUrl;
+        preview.style.display = 'block';
+    });
+
+    function dataURItoBlob(dataURI) {
+        const byteString = atob(dataURI.split(',')[1]);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uintArray = new Uint8Array(arrayBuffer);
+
+        for (let i = 0; i < byteString.length; i++) {
+            uintArray[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([uintArray], { type: 'image/jpeg' });
+    }
+</script>
+{% endblock body %}

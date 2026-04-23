@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bttn.css/0.2.4/bttn.css">
+
+    <title>{% block pagetitle %}{% endblock pagetitle %}</title>
+    <style>
+        :root {
+            --bg: #f4f6f8;
+            --bg-soft: #edf1f4;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-strong: #ffffff;
+            --surface-tint: #f7f9fb;
+            --text: #17212b;
+            --muted: #667482;
+            --border: rgba(23, 33, 43, 0.08);
+            --line: rgba(23, 33, 43, 0.06);
+            --accent: #256b5c;
+            --accent-strong: #1d574b;
+            --accent-soft: #dff1eb;
+            --accent-soft-2: #edf7f4;
+            --warning-soft: #f7ece2;
+            --nav-bg: rgba(18, 26, 34, 0.84);
+            --footer-bg: #121a22;
+            --shadow-lg: 0 24px 60px rgba(20, 28, 36, 0.12);
+            --shadow-md: 0 12px 30px rgba(20, 28, 36, 0.08);
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius-md: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text);
+            font-family: "Manrope", sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(188, 214, 205, 0.55), transparent 28%),
+                radial-gradient(circle at top right, rgba(220, 230, 239, 0.6), transparent 32%),
+                linear-gradient(180deg, #f7fafc 0%, #f3f6f8 100%);
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        a {
+            color: var(--accent-strong);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text);
+        }
+
+        p, li, small, span {
+            color: inherit;
+        }
+
+        .page-shell {
+            padding: 2rem 0 4rem;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .rounded-lg {
+            border-radius: var(--radius-lg);
+        }
+
+        .page-hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-title {
+            margin: 0 0 0.75rem;
+            font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            line-height: 1.05;
+        }
+
+        .page-subtitle {
+            max-width: 760px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 1.02rem;
+            line-height: 1.75;
+        }
+
+        .soft-kicker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0.9rem;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .card-surface,
+        .bg-white.shadow.rounded-lg,
+        .p-5.bg-white.shadow.rounded-lg,
+        .p-4.bg-white.shadow.rounded-lg,
+        .p-3.bg-white.shadow.rounded-lg {
+            background: var(--surface) !important;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md) !important;
+            backdrop-filter: blur(12px);
+        }
+
+        .section-card {
+            height: 100%;
+            border-radius: var(--radius-xl);
+        }
+
+        .section-card h5,
+        .section-card h6 {
+            margin-bottom: 0.9rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .section-copy {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .grid-gap {
+            row-gap: 1.5rem;
+        }
+
+        .content-wrap {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .navbar {
+            margin: 1rem auto 0;
+            max-width: 1240px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 20px;
+            background: var(--nav-bg) !important;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 18px 40px rgba(12, 20, 28, 0.18);
+        }
+
+        .navbar-nav {
+            gap: 0.35rem;
+            padding: 0.35rem;
+        }
+
+        .navbar-brand {
+            margin-right: 0;
+        }
+
+        .navbar .nav-link {
+            padding: 0.8rem 1rem;
+            border-radius: 999px;
+            color: rgba(255, 255, 255, 0.84) !important;
+            font-size: 0.94rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link:focus {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .flash-stack {
+            max-width: 1240px;
+            margin: 1rem auto 0;
+            padding: 0 1rem;
+        }
+
+        .alert {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success,
+        .btn-outline-success {
+            border-radius: 999px;
+            padding: 0.78rem 1.3rem;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: var(--accent-strong);
+            border-color: var(--accent-strong);
+            box-shadow: 0 14px 26px rgba(29, 87, 75, 0.18);
+        }
+
+        .btn-success:hover,
+        .btn-outline-success:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-success {
+            color: var(--accent-strong);
+            border-color: rgba(29, 87, 75, 0.18);
+            background-color: var(--accent-soft-2);
+        }
+
+        .btn-outline-success:hover {
+            color: #fff;
+            background-color: var(--accent-strong);
+            border-color: var(--accent-strong);
+        }
+
+        label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0;
+            padding: 0.78rem 1rem;
+            border-radius: 999px;
+            background-color: var(--accent-strong);
+            color: #fff;
+            font-family: "Manrope", sans-serif;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+            box-shadow: 0 14px 28px rgba(29, 87, 75, 0.16);
+        }
+
+        label:hover {
+            background-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .form-control {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            box-shadow: none;
+        }
+
+        .form-control:focus {
+            border-color: rgba(37, 107, 92, 0.28);
+            box-shadow: 0 0 0 0.22rem rgba(37, 107, 92, 0.12);
+        }
+
+        #file-chosen {
+            color: var(--muted);
+            font-size: 0.96rem;
+            font-weight: 600;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.46rem 0.75rem;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .muted-block {
+            color: var(--muted);
+            line-height: 1.75;
+        }
+
+        .footer-basic {
+            padding: 2.5rem 0;
+            margin-top: 2rem;
+            background-color: var(--footer-bg);
+            color: #f1f3f5;
+        }
+
+        .footer-basic ul {
+            padding: 0;
+            list-style: none;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .footer-basic li {
+            padding: 0 10px;
+        }
+
+        .footer-basic ul a {
+            color: inherit;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .footer-basic ul a:hover {
+            opacity: 1;
+        }
+
+        .footer-basic .social {
+            text-align: center;
+            padding-bottom: 25px;
+        }
+
+        .footer-basic .social > a {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            display: inline-block;
+            text-align: center;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            margin: 0 8px;
+            color: inherit;
+            opacity: 0.78;
+        }
+
+        .footer-basic .social > a:hover {
+            opacity: 1;
+        }
+
+        .footer-basic .copyright {
+            margin-top: 15px;
+            margin-bottom: 0;
+            text-align: center;
+            font-size: 13px;
+            color: #a6b1ba;
+        }
+
+        @media (max-width: 991px) {
+            .page-shell {
+                padding-top: 1.5rem;
+            }
+
+            .navbar {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+
+            .content-wrap {
+                padding: 0 0.75rem;
+            }
+
+            .navbar .content-wrap {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 0.5rem;
+            }
+
+            .navbar-nav.me-auto,
+            .navbar-nav.ms-auto {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .page-subtitle {
+                font-size: 0.96rem;
+            }
+
+            .grid-gap {
+                row-gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="content-wrap d-flex justify-content-between align-items-center w-100">
+            <ul class="navbar-nav me-auto d-flex flex-row flex-wrap">
+                <li class="navbar-brand active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="navbar-brand active">
+                    <a class="nav-link" href="/index">AI Engine</a>
+                </li>
+                {% if current_user %}
+                <li class="navbar-brand">
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </li>
+                {% endif %}
+                <li class="navbar-brand">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto d-flex flex-row flex-wrap">
+                {% if current_user %}
+                <li class="navbar-brand">
+                    <span class="nav-link">{{ current_user['username'] }}</span>
+                </li>
+                <li class="navbar-brand">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                {% else %}
+                <li class="navbar-brand">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="navbar-brand">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category if category in ['success', 'danger', 'warning', 'info'] else 'secondary' }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <main class="page-shell">
+        {% block body %}{% endblock body %}
+    </main>
+
+    <div class="footer-basic">
+        <footer>
+            <p class="copyright"></p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
