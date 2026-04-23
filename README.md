@@ -33,18 +33,9 @@ This project is built upon the existing open-source repository [manthan89-py/Pla
 `-- README.md
 ```
 
-## What Is Not Committed
+#`.pt` File Link
 
-The repository intentionally excludes local/generated files:
-
-- `venv/` and other virtual environments.
-- Python cache files such as `__pycache__/` and `*.pyc`.
-- Local SQLite databases such as `plant_disease.db`.
-- Uploaded scan images in `Flask Deployed App/static/uploads/`.
-- `.env` files and local secrets.
-- Large model checkpoints such as `*.pt`.
-
-The trained model file currently used by the app is `plant_disease_model_1_latest.pt`. It is larger than GitHub's normal file limit, so keep it out of Git and provide it separately through Google Drive, GitHub Releases, or Git LFS.
+[Download .pt file from here](https://drive.google.com/drive/folders/1ewJWAiduGuld_9oGSrTuLumg9y62qS6A)
 
 ## Setup
 
