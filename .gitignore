@@ -1,0 +1,62 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+instance/
+
+# Flask/runtime state
+*.db
+*.sqlite
+*.sqlite3
+Flask Deployed App/static/uploads/*
+!Flask Deployed App/static/uploads/.gitkeep
+
+# Large ML artifacts and experiment outputs
+*.pt
+*.pth
+*.pkl
+*.joblib
+*.h5
+*.onnx
+checkpoints/
+runs/
+wandb/
+mlruns/
+dataset/
+datasets/
+data/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
