@@ -33,7 +33,7 @@ This project is built upon the existing open-source repository [manthan89-py/Pla
 `-- README.md
 ```
 
-#`.pt` File Link
+## `.pt` File Link
 
 [Download .pt file from here](https://drive.google.com/drive/folders/1ewJWAiduGuld_9oGSrTuLumg9y62qS6A)
 
