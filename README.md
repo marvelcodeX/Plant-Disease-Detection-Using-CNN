@@ -80,6 +80,23 @@ http://127.0.0.1:5000
 
 Sample images are available in `test_images/`. Use them to validate that the prediction flow, result page, and dashboard history are working after setup.
 
+---
+
+## Demo Images
+
+![Plant Diesase Detection System](demo_images/dm3.png)
+
+
+![Plant Diesase Detection System](demo_images/dm4.png)
+
+
+![Plant Diesase Detection System](demo_images/dm5.png)
+
+
+![Plant Diesase Detection System](demo_images/dm7.png)
+
+---
+
 ## Credits
 
 Base project and model workflow: [manthan89-py/Plant-Disease-Detection](https://github.com/manthan89-py/Plant-Disease-Detection?tab=readme-ov-file)
