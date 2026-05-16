@@ -84,16 +84,11 @@ Sample images are available in `test_images/`. Use them to validate that the pre
 
 ## Demo Images
 
-![Plant Diesase Detection System](demo_images/dm3.png)
+| | |
+|---|---|
+| ![Plant Diesase Detection System](demo_images/dm3.png) | ![Plant Diesase Detection System](demo_images/dm4.png) |
+| ![Plant Diesase Detection System](demo_images/dm5.png) | ![Plant Diesase Detection System](demo_images/dm7.png) |
 
-
-![Plant Diesase Detection System](demo_images/dm4.png)
-
-
-![Plant Diesase Detection System](demo_images/dm5.png)
-
-
-![Plant Diesase Detection System](demo_images/dm7.png)
 
 ---
 
